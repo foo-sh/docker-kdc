@@ -1,4 +1,4 @@
-FROM docker.io/library/rockylinux:8
+FROM docker.io/library/rockylinux:8.5
 
 RUN set -eux && \
     dnf -y upgrade && \
