@@ -1,5 +1,7 @@
 FROM docker.io/library/rockylinux:8.5
 
+COPY requirements.txt /usr/local/src
+
 RUN set -eux && \
     dnf -y upgrade && \
     dnf -y install --nodocs --setopt=install_weak_deps=False \
@@ -11,9 +13,8 @@ RUN set -eux && \
         supervisor && \
     dnf -y clean all && \
     rm -rf /var/cache/dnf /var/log/dnf.* && \
-    pip3 install \
-        gunicorn \
-        kdcproxy
+    pip3 install -r /usr/local/src/requirements.txt && \
+    rm -f /usr/local/src/requirements.txt
 
 RUN set -eux && \
     useradd -c "KDCProxy" -d /var/empty -M -r -s /sbin/nologin kdcproxy

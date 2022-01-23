@@ -1,8 +1,13 @@
 ---
 version: 2
 updates:
-  - package-ecosystem: "docker"
-    directory: "/"
+  - package-ecosystem: docker
+    directory: /
     schedule:
-      interval: "daily"
-    rebase-strategy: "disabled"
+      interval: daily
+    rebase-strategy: disabled
+  - package-ecosystem: pip
+    directory: /
+    schedule:
+      interval: daily
+    rebase-strategy: disabled
