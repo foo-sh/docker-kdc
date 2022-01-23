@@ -1,2 +1,2 @@
 # docker-kdc
-Docker Image packaking for Kerberos KDC with only HTTP access
+Docker Image packaging for Kerberos KDC with HTTP only access and LDAP backend
