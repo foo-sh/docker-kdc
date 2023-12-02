@@ -2,26 +2,26 @@ FROM docker.io/library/rockylinux:9.3.20231119
 
 COPY requirements.txt /usr/local/src
 
-RUN set -eux && \
-    dnf -y upgrade && \
+RUN set -eux ; \
+    dnf -y upgrade ; \
     dnf -y install --nodocs --setopt=install_weak_deps=False \
-        epel-release && \
+        epel-release ; \
     dnf -y install --nodocs --setopt=install_weak_deps=False \
         krb5-server \
         krb5-server-ldap \
         python3-pip \
-        supervisor && \
-    dnf -y clean all && \
-    rm -rf /var/cache/dnf /var/log/dnf.* && \
-    pip3 install -r /usr/local/src/requirements.txt && \
+        supervisor ; \
+    dnf -y clean all ; \
+    rm -rf /var/cache/dnf /var/log/dnf.* ; \
+    pip3 install -r /usr/local/src/requirements.txt ; \
     rm -f /usr/local/src/requirements.txt
 
-RUN set -eux && \
+RUN set -eux ; \
     useradd -c "KDCProxy" -d /var/empty -M -r -s /sbin/nologin kdcproxy
 
 COPY entrypoint.sh /entrypoint.sh
 
-RUN set -eux && \
+RUN set -eux ; \
     { \
         echo "[supervisord]" ; \
         echo "user = root" ; \
@@ -30,10 +30,10 @@ RUN set -eux && \
         echo "logfile = /dev/null" ; \
         echo "logfile_maxbytes = 0" ; \
         echo "loglevel = info" ; \
-        echo && \
+        echo ; \
         echo "[include]" ; \
         echo "files = supervisord.d/*.ini" ; \
-    } | tee /etc/supervisord.conf && \
+    } | tee /etc/supervisord.conf ; \
     { \
         echo "[program:kdcproxy]" ; \
         echo "command = /usr/local/bin/gunicorn --bind :8000 -w 4 kdcproxy" ; \
@@ -41,7 +41,7 @@ RUN set -eux && \
         echo "redirect_stderr = true" ; \
         echo "stdout_logfile = /dev/stdout" ; \
         echo "stdout_logfile_maxbytes = 0" ; \
-    } | tee /etc/supervisord.d/kdcproxy.ini && \
+    } | tee /etc/supervisord.d/kdcproxy.ini ; \
     { \
         echo "[program:krb5kdc]" ; \
         echo "command = /usr/sbin/krb5kdc -n -w 4" ; \
