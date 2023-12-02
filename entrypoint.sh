@@ -4,7 +4,7 @@ set -eu
 
 umask 022
 
-if [ -z "${LDAP_BASEDN+x}" ]; then
+if [ -z "${LDAP_BASEDN:-}" ]; then
     LDAP_BASEDN="$(echo "$KRB5_REALM" | awk -F. '
       {
         for(i=1; i<=NF; i++) {
@@ -19,7 +19,7 @@ if [ -z "${LDAP_BASEDN+x}" ]; then
       }')"
 fi
 
-if [ -z "${LDAP_URI+x}" ]; then
+if [ -z "${LDAP_URI:-}" ]; then
     LDAP_URI="ldaps://ldap$(echo "$LDAP_BASEDN" | sed -e 's/,\?[[:alpha:]]\+=/\./g')"
 fi
 
