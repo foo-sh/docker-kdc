@@ -50,7 +50,8 @@ cat <<EOF > /var/kerberos/krb5kdc/kdc.conf
     max_lifetime = 24h 0m 0s
     max_renewable_lifetime = 7d 0h 0m 0s
     master_key_type = aes256-cts-hmac-sha1-96
-    supported_enctypes = aes256-cts-hmac-sha1-96:normal
+    permitted_encryptes = aes256-cts-hmac-sha1-96,aes256-cts-hmac-sha384-192
+    supported_enctypes = aes256-cts-hmac-sha384-192
   }
 
 [dbmodules]
