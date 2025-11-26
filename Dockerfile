@@ -1,4 +1,4 @@
-FROM docker.io/rockylinux/rockylinux:10.0
+FROM docker.io/rockylinux/rockylinux:10.1
 
 COPY requirements.txt /usr/local/src
 
