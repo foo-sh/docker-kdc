@@ -1,2 +1,2 @@
-gunicorn==24.1.1
+gunicorn==25.0.1
 kdcproxy==1.0.0
