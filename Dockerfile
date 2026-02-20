@@ -13,7 +13,7 @@ RUN set -eux ; \
         supervisor ; \
     dnf -y clean all ; \
     rm -rf /var/cache/dnf /var/log/dnf.* ; \
-    pip3 install -r /usr/local/src/requirements.txt ; \
+    pip3 install --root-user-action=ignore -r /usr/local/src/requirements.txt ; \
     rm -f /usr/local/src/requirements.txt
 
 RUN set -eux ; \
