@@ -30,6 +30,7 @@ RUN set -eux ; \
         echo "logfile = /dev/null" ; \
         echo "logfile_maxbytes = 0" ; \
         echo "loglevel = info" ; \
+        echo "pidfile = /dev/null" ; \
         echo ; \
         echo "[include]" ; \
         echo "files = supervisord.d/*.ini" ; \
