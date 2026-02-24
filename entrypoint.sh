@@ -23,14 +23,17 @@ if [ -z "${LDAP_URI:-}" ]; then
     LDAP_URI="ldaps://ldap$(echo "$LDAP_BASEDN" | sed -e 's/,\?[[:alpha:]]\+=/\./g')"
 fi
 
-cat <<EOF > /etc/kdcproxy.conf
+export KDCPROXY_CONFIG="/run/kdcproxy.conf"
+cat <<EOF > "$KDCPROXY_CONFIG"
 [global]
 
 [${KRB5_REALM}]
 kerberos = kerberos+tcp://127.0.0.1
 EOF
 
-cat <<EOF > /var/kerberos/krb5kdc/kdc.conf
+export KRB5_KDC_PROFILE="/run/krb5kdc/kdc.conf"
+install -d -m 0700 "$(dirname "$KRB5_KDC_PROFILE")"
+cat <<EOF > "$KRB5_KDC_PROFILE"
 [libdefaults]
   default_realm = ${KRB5_REALM}
 
@@ -46,7 +49,7 @@ cat <<EOF > /var/kerberos/krb5kdc/kdc.conf
 [realms]
   ${KRB5_REALM} = {
     database_module = ldap.$(echo "${KRB5_REALM}" | tr '[:upper:]' '[:lower:]')
-    key_stash_file = /var/kerberos/krb5kdc/.k5.${KRB5_REALM}
+    key_stash_file = $(dirname "$KRB5_KDC_PROFILE")/.k5.${KRB5_REALM}
     max_lifetime = 24h 0m 0s
     max_renewable_lifetime = 7d 0h 0m 0s
     master_key_type = aes256-cts-hmac-sha1-96
@@ -62,7 +65,7 @@ cat <<EOF > /var/kerberos/krb5kdc/kdc.conf
     ldap_kerberos_container_dn = "ou=System,${LDAP_BASEDN}"
     ldap_kdc_dn = "uid=krb5kdc,cn=${KRB5_REALM},ou=System,${LDAP_BASEDN}"
     ldap_kadmind_dn = "uid=krb5kdc,cn=${KRB5_REALM},ou=System,${LDAP_BASEDN}"
-    ldap_service_password_file = "/var/kerberos/krb5kdc/.k5.ldap.${KRB5_REALM}"
+    ldap_service_password_file = "$(dirname "$KRB5_KDC_PROFILE")/.k5.ldap.${KRB5_REALM}"
     ldap_servers = "${LDAP_URI}"
   }
 EOF
