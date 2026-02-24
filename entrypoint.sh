@@ -80,4 +80,6 @@ EOF
 
 unset LDAP_BASEDN LDAP_BIND_PW LDAP_URI KRB5_REALM KRB5_STASH_PW
 
+install -d -m 0770 -o root -g kdcproxy /run/kdcproxy
+
 exec "$@"

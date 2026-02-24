@@ -39,6 +39,7 @@ RUN set -eux ; \
         echo "[program:kdcproxy]" ; \
         echo "command = /usr/local/bin/gunicorn --bind :8000 -w 4 kdcproxy" ; \
         echo "user = kdcproxy" ; \
+        echo "environment = TMPDIR=/run/kdcproxy" ; \
         echo "redirect_stderr = true" ; \
         echo "stdout_logfile = /dev/stdout" ; \
         echo "stdout_logfile_maxbytes = 0" ; \
@@ -53,5 +54,6 @@ RUN set -eux ; \
 
 EXPOSE 8000/tcp
 
+WORKDIR "/run"
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
