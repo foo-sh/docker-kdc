@@ -5,9 +5,13 @@ updates:
     directory: /
     schedule:
       interval: daily
+    cooldown:
+      default-days: 7
     rebase-strategy: disabled
   - package-ecosystem: pip
     directory: /
     schedule:
       interval: daily
+    cooldown:
+      default-days: 7
     rebase-strategy: disabled
